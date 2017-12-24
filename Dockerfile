@@ -19,11 +19,13 @@ RUN wget --no-check-certificate "https://bitbucket.org/Jelurida/${NRS_TYPE}/down
 ADD https://github.com/kreuzwerker/envplate/releases/download/v0.0.8/ep-linux /usr/local/bin/ep
 RUN chmod +x /usr/local/bin/ep \
  && sed -i \
+  -e 's/nxt.apiServerHost=.*/nxt.apiServerHost=0.0.0.0/' \
+  -e 's/nxt.uiServerHost=.*/nxt.uiServerHost=0.0.0.0/' \
   -e 's/nxt.myAddress=.*/nxt.myAddress=${NRS_ADDRESS}/' \
   -e 's/nxt.myPlatform=.*/nxt.myPlatform=${NRS_PLATFORM}/' \
   -e 's/nxt.myHallmark=.*/nxt.myHallmark=${NRS_HALLMARK}/' \
   -e 's/nxt.allowedBotHosts=.*/nxt.allowedBotHosts=${NRS_ALLOWED_BOT_HOSTS}/' \
-  -e 's/nxt.apiServerHost=.*/nxt.apiServerHost=${NRS_API_SERVER_HOST}/' \
+  -e 's/nxt.allowedUserHosts=.*/nxt.allowedUserHosts=${NRS_ALLOWED_USER_HOSTS}/' \
   -e 's/nxt.adminPassword=.*/nxt.adminPassword=${NRS_ADMIN_PASSWORD}/' \
   conf/nxt-default.properties
 
@@ -31,7 +33,7 @@ ENV NRS_PLATFORM="Linux amd64" \
  NRS_ADDRESS= \
  NRS_HALLMARK= \
  NRS_ALLOWED_BOT_HOSTS="127.0.0.1; localhost; [0:0:0:0:0:0:0:1];" \
- NRS_API_SERVER_HOST= \
+ NRS_ALLOWED_USER_HOSTS="127.0.0.1; localhost; [0:0:0:0:0:0:0:1];" \
  NRS_ADMIN_PASSWORD=
 
 VOLUME /opt/nxt/nxt_db
