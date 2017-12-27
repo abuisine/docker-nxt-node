@@ -1,0 +1,41 @@
+version: '3.1'
+services:
+ nxt-node:
+  build:
+   context: .
+   args:
+    NRS_TYPE: nxt
+    NRS_VERSION: 1.11.11
+    ENVPLATE_ARCH: linux-arm
+  ports:
+   - "7874:7874"
+   - "7876:7876"
+  environment:
+   NRS_ADDRESS: "${NRS_ADDRESS}"
+   NRS_PLATFORM: "${NRS_PLATFORM}"
+   NRS_ADMIN_PASSWORD: "${NRS_ADMIN_PASSWORD}"
+  volumes:
+   - nxt_db:/opt/nxt/nxt_db
+   - nxt_db:/opt/nxt/nxt_test_db
+ ardor-node:
+  build:
+   context: .
+   args:
+    NRS_TYPE: ardor
+    NRS_VERSION: 2.0.8e
+    ENVPLATE_ARCH: linux-arm
+  ports:
+   - "27874:27874"
+   - "27876:27876"
+  environment:
+   NRS_ADDRESS: "${NRS_ADDRESS}"
+   NRS_PLATFORM: "${NRS_PLATFORM}"
+   NRS_ADMIN_PASSWORD: "${NRS_ADMIN_PASSWORD}"
+  volumes:
+   - ardor_db:/opt/ardor/nxt_db
+   - ardor_db:/opt/ardor/nxt_test_db
+volumes:
+ nxt_db:
+ nxt_test_db:
+ ardor_db:
+ ardor_test_db:
