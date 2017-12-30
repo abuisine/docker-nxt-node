@@ -30,7 +30,7 @@ ENV NRS_ADDRESS= \
 
 VOLUME /opt/${NRS_TYPE}/nxt_db
 VOLUME /opt/${NRS_TYPE}/nxt_test_db
-EXPOSE 7874 7876 27874 27876
+EXPOSE 6874 6876 7874 7876 26874 26876 27874 27876
 
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
