@@ -26,7 +26,7 @@ services:
    context: .
    args:
     NRS_TYPE: ardor
-    NRS_VERSION: 2.0.8e
+    NRS_VERSION: 2.0.9
   ports:
    - "27874:27874"
    - "27876:27876"
