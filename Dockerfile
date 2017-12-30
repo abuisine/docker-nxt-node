@@ -10,14 +10,17 @@ RUN apk add --no-cache \
  gpgme
 
 WORKDIR /opt/${NRS_TYPE}
-COPY resources/docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
+COPY resources/docker-entrypoint.sh resources/import-letsencrypt-java.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/import-letsencrypt-java.sh \
  && wget --no-check-certificate "https://bitbucket.org/Jelurida/${NRS_TYPE}/downloads/${NRS_TYPE}-client-${NRS_VERSION}.zip" \
  && wget --no-check-certificate "https://bitbucket.org/Jelurida/${NRS_TYPE}/downloads/${NRS_TYPE}-client-${NRS_VERSION}.zip.asc" \
  && gpg --keyserver pgpkeys.mit.edu --recv-key 0xC654D7FCFF18FD55 \
  && gpg --verify ${NRS_TYPE}-client-${NRS_VERSION}.zip.asc \
  && unzip ${NRS_TYPE}-client-${NRS_VERSION}.zip -d /opt \
  && rm ${NRS_TYPE}-client-${NRS_VERSION}.zip ${NRS_TYPE}-client-${NRS_VERSION}.zip.asc
+
+# install let'sencrypt CA
+RUN /usr/local/bin/import-letsencrypt-java.sh
 
 ENV NRS_ADDRESS= \
  NRS_HALLMARK= \
