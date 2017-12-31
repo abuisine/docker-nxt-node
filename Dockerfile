@@ -20,6 +20,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/import-letsencry
  && rm ${NRS_TYPE}-client-${NRS_VERSION}.zip ${NRS_TYPE}-client-${NRS_VERSION}.zip.asc
 
 # install let'sencrypt CA
+#keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore -storetype pkcs12 -storepass qwerty -validity 360 -keysize 2048
 RUN /usr/local/bin/import-letsencrypt-java.sh
 
 ENV NRS_ADDRESS= \
@@ -31,10 +32,13 @@ ENV NRS_ADDRESS= \
  NRS_MAX_OUTBOUND=50 \
  NRS_MAX_PUBLIC_PEERS=20
 
+# keytool -genkey -alias my_alias -keyalg RSA -keystore keystore
+# ENV NRS_KEYSTORE_PASSWORD=<your_password>
+
+VOLUME /opt/${NRS_TYPE}/certs
 VOLUME /opt/${NRS_TYPE}/nxt_db
 VOLUME /opt/${NRS_TYPE}/nxt_test_db
 EXPOSE 6874 6876 7874 7876 26874 26876 27874 27876
-
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD java -cp classes:lib/*:conf:addons/classes:addons/lib/* nxt.Nxt

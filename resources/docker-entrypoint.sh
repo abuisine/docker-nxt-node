@@ -16,4 +16,10 @@ echo "nxt.maxNumberOfInboundConnections=${NRS_MAX_INBOUND}" >> conf/nxt.properti
 echo "nxt.maxNumberOfOutboundConnections=${NRS_MAX_OUTBOUND}" >> conf/nxt.properties
 echo "nxt.maxNumberOfConnectedPublicPeers=${NRS_MAX_PUBLIC_PEERS}" >> conf/nxt.properties
 
+if [ ! -z "$NRS_KEYSTORE_PASSWORD" ]; then
+	echo "nxt.apiSSL=true" >> conf/nxt.properties
+	echo "nxt.keyStorePath=keystores/keystore" >> conf/nxt.properties
+	echo "nxt.keyStorePassword=${NRS_KEYSTORE_PASSWORD}" >> conf/nxt.properties
+fi  
+
 exec "$@"

@@ -1,23 +1,32 @@
 version: '3.1'
 services:
+ certbot:
+  image: certbot/certbot
+  volumes:
+   - letsencrypt:/etc/letsencrypt
+  ports:
+   - "80:80"
+   - "443:443"
  nxt-node:
   restart: always
   build:
    context: .
    args:
     NRS_TYPE: nxt
-    NRS_VERSION: 1.11.11
+    NRS_VERSION: 1.11.12
   ports:
    - "7874:7874"
    - "7876:7876"
   environment:
    NRS_ADDRESS: "${NRS_ADDRESS}"
    NRS_ADMIN_PASSWORD: "${NRS_ADMIN_PASSWORD}"
+   NRS_KEYSTORE_PASSWORD: "${NRS_KEYSTORE_PASSWORD}"
    NRS_HALLMARK: "${NRS_HALLMARK}"
    NRS_MAX_INBOUND: 2000
    NRS_MAX_OUTBOUND: 50
    NRS_MAX_PUBLIC_PEERS: 20
   volumes:
+   - keystores:/opt/nxt/keystores
    - nxt_db:/opt/nxt/nxt_db
    - nxt_db:/opt/nxt/nxt_test_db
  ardor-node:
@@ -33,10 +42,17 @@ services:
   environment:
    NRS_ADDRESS: "${NRS_ADDRESS}"
    NRS_ADMIN_PASSWORD: "${NRS_ADMIN_PASSWORD}"
+   NRS_KEYSTORE_PASSWORD: "${NRS_KEYSTORE_PASSWORD}"
+   NRS_MAX_INBOUND: 2000
+   NRS_MAX_OUTBOUND: 50
+   NRS_MAX_PUBLIC_PEERS: 20
   volumes:
+   - keystores:/opt/ardor/keystores
    - ardor_db:/opt/ardor/nxt_db
    - ardor_test_db:/opt/ardor/nxt_test_db
 volumes:
+ letsencrypt:
+ keystores:
  nxt_db:
  nxt_test_db:
  ardor_db:
